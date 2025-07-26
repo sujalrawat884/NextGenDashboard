@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>ECharts</title>
+    <!-- Include the ECharts file you just downloaded -->
+    <script src="/echarts.js"></script>
+</head>
+<body>
+
+<!-- Prepare a DOM with a defined width and height for ECharts -->
+<div id="main" style="width: 600px;height:600px;"></div>
+    <script type="text/javascript" th:inline="javascript">
+        // Initialize the echarts instance based on the prepared dom
+        let myChart = echarts.init(document.getElementById('main'));
+        let month = [[${month}]];
+        let count = [[${count}]];
+
+        // Specify the configuration items and data for the chart
+        let option = {
+            title: {
+                text: 'ECharts'
+            },
+            tooltip: {},
+            xAxis: {
+                type: 'category',
+                data: month
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: 'sales',
+                    type: 'bar',
+                    data: count
+                }
+            ]
+        };
+
+        // Display the chart using the configuration items and data just specified.
+        myChart.setOption(option);
+    </script>
+</body>
+</html>
