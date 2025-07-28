@@ -39,10 +39,22 @@ public class DashboardController {
             count.addAll(map.values());
         }
         List<Integer> years = dashboardService.getDistinctYears();
+        List<Map<String, Integer>> machineBatchCounts = dashboardService.getMachineBatchCountByYear(year);
+        System.out.println("machineBatchCounts: " + machineBatchCounts);
+        List<String> machineIds = new ArrayList<>();
+        List<Integer> batchCounts = new ArrayList<>();
+        for (Map<String, Integer> map : machineBatchCounts) {
+            machineIds.addAll(map.keySet());
+            batchCounts.addAll(map.values());
+        }
+        model.addAttribute("MachineId", machineIds);
+        model.addAttribute("BatchCount", batchCounts);
         model.addAttribute("selectedYear", year);
         model.addAttribute("years", years);
         model.addAttribute("month", month);
         model.addAttribute("count", count);
         return "dashboard";
     }
+
+
 }

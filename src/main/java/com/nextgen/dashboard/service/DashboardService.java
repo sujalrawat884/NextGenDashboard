@@ -36,10 +36,19 @@ public class DashboardService {
         // Optional: sort by month
         Map<Integer, Integer> sortedMap = new TreeMap<>(resultMap);
 
-        return List.of(sortedMap); // Return as a list of maps for consistency with the original method signature
+        return List.of(sortedMap);
+    }
 
-
-
+    public List<Map<String, Integer>> getMachineBatchCountByYear(int year) {
+        List<Map<String, Object>> machineBatchCounts = dashboardRepository.getMachineBatchCountByYear(year);
+        List<Map<String, Integer>> chartData = machineBatchCounts.stream()
+                .map(row -> {
+                    String MachineId = row.get("MachineId").toString();
+                    int BatchCount = Integer.parseInt(row.get("BatchCount").toString());
+                    return Map.of(MachineId, BatchCount);
+                })
+                .toList();
+        return chartData;
     }
 
 

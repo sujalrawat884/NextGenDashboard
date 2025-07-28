@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>ECharts</title>
+    <title>Batch Details</title>
     <!-- Include the ECharts file you just downloaded -->
     <script src="/echarts.js"></script>
 </head>
@@ -16,39 +16,78 @@
     <button type="submit">Submit</button>
 </form>
 
-<!-- Prepare a DOM with a defined width and height for ECharts -->
-<div id="main" style="width: 600px;height:600px;"></div>
+<!-- Prepare a container for side-by-side charts -->
+<div style="display: flex; flex-direction: row; gap: 20px;">
+    <!-- Prepare a DOM with a defined width and height for ECharts -->
+    <div id="main" style="width: 600px;height:600px;"></div>
 
-    <script type="text/javascript" th:inline="javascript">
-        // Initialize the echarts instance based on the prepared dom
-        let myChart = echarts.init(document.getElementById('main'));
-        let month = [[${month}]];
-        let count = [[${count}]];
+    <!-- Prepare a DOM with a defined width and height for ECharts -->
+    <div id="main1" style="width: 600px;height:600px;"></div>
+</div>
 
-        // Specify the configuration items and data for the chart
-        let option = {
-            title: {
-                text: 'ECharts'
-            },
-            tooltip: {},
-            xAxis: {
-                type: 'category',
-                data: month
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [
-                {
-                    name: 'Batch Count',
-                    type: 'bar',
-                    data: count
-                }
-            ]
-        };
+<script type="text/javascript" th:inline="javascript">
+    // Initialize the echarts instance based on the prepared dom
+    let myChart = echarts.init(document.getElementById('main'));
+    let month = [[${month}]];
+    let count = [[${count}]];
 
-        // Display the chart using the configuration items and data just specified.
-        myChart.setOption(option);
-    </script>
+    // Specify the configuration items and data for the chart
+    let option = {
+        title: {
+            text: 'Batch Count by Month'
+        },
+        tooltip: {},
+        xAxis: {
+            type: 'category',
+            data: month
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: 'Batch Count',
+                type: 'bar',
+                data: count
+            }
+        ]
+    };
+
+    // Display the chart using the configuration items and data just specified.
+    myChart.setOption(option);
+</script>
+
+
+<script type="text/javascript" th:inline="javascript">
+    // Initialize the echarts instance based on the prepared dom
+    let myChart2 = echarts.init(document.getElementById('main1'));
+    let machine = [[${MachineId}]];
+    let batchcount = [[${BatchCount}]];
+
+    // Specify the configuration items and data for the chart
+    let option2 = {
+        title: {
+            text: 'Batch Count by Machine'
+        },
+        tooltip: {},
+        xAxis: {
+            type: 'category',
+            data: machine
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: 'Batch Count',
+                type: 'bar',
+                data: batchcount
+            }
+        ]
+    };
+
+    // Display the chart using the configuration items and data just specified.
+    myChart2.setOption(option2);
+</script>
 </body>
 </html>
