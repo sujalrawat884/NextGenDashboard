@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.Month;
 import java.util.ArrayList;
@@ -27,9 +28,17 @@ public class DashboardController {
 //        model.addAttribute("count", count);
 //        return "dashboard";
 //    }
+    @GetMapping
+    public String getDistinctYears(Model model) {
+        List<Integer> years = dashboardService.getDistinctYears();
+        System.out.println("years: " + years);
+        model.addAttribute("years", years);
+        return "dashboard";
+    }
+
     @GetMapping("/month")
-    public String getBatchMonthly(Model model) {
-        List<Map<Integer, Integer>> monthlyCounts = dashboardService.getMonthlyBatchCounts();
+    public String getBatchMonthly(Model model, @RequestParam("year") int year) {
+        List<Map<Integer, Integer>> monthlyCounts = dashboardService.getMonthlyBatchCounts(year);
         System.out.println("monthlyCounts: " + monthlyCounts);
         List<Integer> month = new ArrayList<>();
         for (Map<Integer, Integer> map : monthlyCounts) {
@@ -39,6 +48,9 @@ public class DashboardController {
         for (Map<Integer, Integer> map : monthlyCounts) {
             count.addAll(map.values());
         }
+        List<Integer> years = dashboardService.getDistinctYears();
+        model.addAttribute("selectedYear", year);
+        model.addAttribute("years", years);
         model.addAttribute("month", month);
         model.addAttribute("count", count);
         return "dashboard";

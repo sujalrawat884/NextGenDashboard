@@ -14,8 +14,12 @@ public class DashboardService {
     @Autowired
     private DashboardRepository dashboardRepository;
 
-    public List<Map<Integer, Integer>> getMonthlyBatchCounts() {
-        List<Map<String, Object>> monthlyCounts = dashboardRepository.findDistinctBatchNoByMonthGroupByCreateDate();
+    public List<Integer> getDistinctYears() {
+        return dashboardRepository.getYear();
+    }
+
+    public List<Map<Integer, Integer>> getMonthlyBatchCounts(int year) {
+        List<Map<String, Object>> monthlyCounts = dashboardRepository.findDistinctBatchNoByMonthGroupByCreateDate(year);
         List<Map<Integer, Integer>> chartData = monthlyCounts.stream()
                 .map(row -> {
                     int month = Integer.parseInt(row.get("MONTH").toString());

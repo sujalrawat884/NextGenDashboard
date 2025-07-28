@@ -7,6 +7,14 @@
     <script src="/echarts.js"></script>
 </head>
 <body>
+<!-- Year selection form -->
+<form method="get" th:action="@{/month}">
+    <label for="year">Select Year:</label>
+    <select name="year" id="year">
+        <option th:each="y : ${years}" th:value="${y}" th:text="${y}" th:selected="${y.equals(selectedYear)}"></option>
+    </select>
+    <button type="submit">Submit</button>
+</form>
 
 <!-- Prepare a DOM with a defined width and height for ECharts -->
 <div id="main" style="width: 600px;height:600px;"></div>
@@ -32,7 +40,7 @@
             },
             series: [
                 {
-                    name: 'sales',
+                    name: 'Batch Count',
                     type: 'bar',
                     data: count
                 }
