@@ -1,12 +1,10 @@
 package com.nextgen.dashboard.service;
 
-import com.nextgen.dashboard.entity.machineresult;
 import com.nextgen.dashboard.repository.DashboardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class DashboardService {
@@ -26,7 +24,7 @@ public class DashboardService {
                     int count = Integer.parseInt(row.get("COUNT").toString());
                     return Map.of(month, count);
                 })
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("chartData: " + chartData);
         // Combine all input maps into one full map
         Map<Integer, Integer> resultMap = new HashMap<>();
