@@ -18,7 +18,4 @@ public interface DashboardRepository extends JpaRepository<machineresult, String
     @Query(value = "SELECT DISTINCT YEAR(create_date) FROM `dg_lab_test_machine_result`", nativeQuery = true)
     List<Integer> getYear();
 
-
-
-    // Define custom query methods if needed
 }
