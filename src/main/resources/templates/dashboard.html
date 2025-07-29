@@ -149,7 +149,9 @@
         title: {
             text: 'Batch Count by Month'
         },
-        tooltip: {},
+        tooltip: {
+            trigger: 'axis'
+        },
         xAxis: {
             type: 'category',
             data: month
@@ -157,11 +159,24 @@
         yAxis: {
             type: 'value'
         },
+        legend: {
+            data: ['Bar', 'Line']
+        },
         series: [
             {
                 name: 'Batch Count',
                 type: 'bar',
                 data: count
+            },
+            {
+                name: 'Line',
+                type: 'line',
+                data: count,
+                smooth: true,
+                lineStyle: {
+                    width: 2,
+                    color: '#ff4d4f'
+                }
             }
         ]
     };
