@@ -20,4 +20,9 @@ public interface DashboardRepository extends JpaRepository<machineresult, String
 
     @Query(value = "SELECT machine_id AS MachineId, COUNT(DISTINCT batch_no) AS BatchCount FROM `dg_lab_test_machine_result` WHERE YEAR(create_date)= :year GROUP BY machine_id", nativeQuery = true)
     List<Map<String, Object>> getMachineBatchCountByYear(@Param("year") int year);
+
+    @Query(value = "SELECT MONTH(create_date) AS MONTH,COUNT(DISTINCT batch_no) AS COUNT FROM `dg_lab_test_machine_result` WHERE YEAR(create_date)= :year AND machine_id= :machineId GROUP BY MONTH(create_date)", nativeQuery = true)
+    List<Map<String, Object>> getMachineDetailById(
+            @Param("machineId") String machineId, @Param("year") int year
+            );
 }

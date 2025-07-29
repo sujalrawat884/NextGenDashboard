@@ -22,6 +22,9 @@ public class DashboardTest {
     @Test
     public void testDashboard() {
 
+        List<Map<Integer, Integer>> monthlyCountByMachine = dashboardService.getMachineDetailsById();
+        System.out.println("Monthly Count By Machine: " + monthlyCountByMachine);
+
 
     }
 

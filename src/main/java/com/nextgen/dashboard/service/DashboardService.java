@@ -29,12 +29,14 @@ public class DashboardService {
         // Combine all input maps into one full map
         Map<Integer, Integer> resultMap = new HashMap<>();
         chartData.forEach(resultMap::putAll);
+
         // Ensure keys 1-12 are present
         for (int month = 1; month <= 12; month++) {
             resultMap.putIfAbsent(month, 0);
         }
         // Optional: sort by month
         Map<Integer, Integer> sortedMap = new TreeMap<>(resultMap);
+
 
         return List.of(sortedMap);
     }
@@ -49,6 +51,28 @@ public class DashboardService {
                 })
                 .toList();
         return chartData;
+    }
+
+    public List<Map<Integer, Integer>> getMachineDetailsById(String machineId, int year) {
+        List<Map<String, Object>> machineDetails = dashboardRepository.getMachineDetailById(machineId, year);
+        List<Map<Integer, Integer>> chartData = machineDetails.stream()
+                .map(row -> {
+                    int month = Integer.parseInt(row.get("MONTH").toString());
+                    int count = Integer.parseInt(row.get("COUNT").toString());
+                    return Map.of(month, count);
+                })
+                .toList();
+        System.out.println("chartData: " + chartData);
+        // Combine all input maps into one full map
+        Map<Integer, Integer> resultMap = new HashMap<>();
+        chartData.forEach(resultMap::putAll);
+        // Ensure keys 1-12 are present
+        for (int month = 1; month <= 12; month++) {
+            resultMap.putIfAbsent(month, 0);
+        }
+        // Optional: sort by month
+        Map<Integer, Integer> sortedMap = new TreeMap<>(resultMap);
+        return List.of(sortedMap);
     }
 
 
