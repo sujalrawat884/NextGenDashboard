@@ -25,4 +25,6 @@ public interface DashboardRepository extends JpaRepository<machineresult, String
     List<Map<String, Object>> getMachineDetailById(
             @Param("machineId") String machineId, @Param("year") int year
             );
+    @Query(value = "SELECT DISTINCT(machine_id) AS MachineName FROM `dg_lab_test_machine_result`", nativeQuery = true)
+    List<String> getDistinctMachineNames();
 }

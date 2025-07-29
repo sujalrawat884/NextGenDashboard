@@ -3,43 +3,147 @@
 <head>
     <meta charset="utf-8" />
     <title>Machine Details</title>
-    <!-- Include the ECharts file you just downloaded -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <script src="/echarts.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background: #1a237e;
+            color: #fff;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+        }
+        .navbar .company {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .navbar nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 24px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .navbar nav a:hover {
+            color: #ffb300;
+        }
+        .header {
+            text-align: center;
+            margin: 32px 0 16px 0;
+            font-size: 2.2rem;
+            color: #1a237e;
+            font-weight: 700;
+        }
+        .form-section {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 24px 32px;
+            margin: 0 auto 32px auto;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        label {
+            font-weight: 500;
+            color: #1a237e;
+        }
+        select, button[type="submit"] {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: 1px solid #bdbdbd;
+            font-size: 1rem;
+        }
+        button[type="submit"] {
+            background: #1a237e;
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: #3949ab;
+        }
+        .charts-container {
+            display: flex;
+            flex-direction: row;
+            gap: 32px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        #main {
+            width: 600px;
+            height: 400px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .side-btn {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+        }
+        .side-btn button {
+            background: #ffb300;
+            color: #1a237e;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .side-btn button:hover {
+            background: #ffa000;
+        }
+    </style>
 </head>
 <body>
-<!-- Year selection form -->
-<form method="get" th:action="@{/api/machinedetails/{machineId}(machineId=${machineId})}">
+<div class="navbar">
+    <div class="company">NextGen E-Solutions</div>
+    <nav>
+        <a href="/api">Home</a>
+        <a th:href="@{'/api/machinedetails/' + ${machineId}}" th:text="${machineId}">Machine</a>
+        <a href="/api">Dashboard</a>
+    </nav>
+</div>
+<div class="header">Machine Details Dashboard</div>
+<form method="get" th:action="@{/api/machinedetails/{machineId}(machineId=${machineId})}" class="form-section">
     <label for="year">Select Year:</label>
     <select name="year" id="year">
         <option th:each="y : ${years}" th:value="${y}" th:text="${y}" th:selected="${y.equals(selectedYear)}"></option>
     </select>
     <button type="submit">Submit</button>
 </form>
-
-<!-- Prepare a container for side-by-side charts -->
-<div style="display: flex; flex-direction: row; gap: 20px;">
-    <!-- Prepare a DOM with a defined width and height for ECharts -->
-    <div id="main" style="width: 600px;height:400px;"></div>
-    <div>
-        <button type="button" th:onclick="|location.href='@{/api}'|" >Batch Details</button>
-    </div>
-    <div>
-        <h2 th:if="${machineId != null}" th:text="${machineId}"></h2>
-    </div>
+<div class="charts-container">
+    <div id="main"></div>
 </div>
-
+<div class="side-btn">
+    <button type="button" th:onclick="|location.href='@{/api}'|">Batch Details</button>
+</div>
 <script type="text/javascript" th:inline="javascript">
-    // Initialize the echarts instance based on the prepared dom
     let myChart = echarts.init(document.getElementById('main'));
     let month = [[${month}]];
     let count = [[${count}]];
-
-    // Specify the configuration items and data for the chart
     let option = {
         title: {
             text: 'Batch Count by Month'
         },
-        tooltip: {},
+        tooltip: {
+            trigger: 'axis'
+        },
         xAxis: {
             type: 'category',
             data: month
@@ -47,16 +151,27 @@
         yAxis: {
             type: 'value'
         },
+        legend: {
+            data: ['Bar', 'Line']
+        },
         series: [
             {
                 name: 'Batch Count',
                 type: 'bar',
                 data: count
+            },
+            {
+                name: 'Line',
+                type: 'line',
+                data: count,
+                smooth: true,
+                lineStyle: {
+                    width: 2,
+                    color: '#ff4d4f'
+                }
             }
         ]
     };
-
-    // Display the chart using the configuration items and data just specified.
     myChart.setOption(option);
 </script>
 </body>

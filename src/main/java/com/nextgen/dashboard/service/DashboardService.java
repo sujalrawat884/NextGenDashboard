@@ -75,6 +75,10 @@ public class DashboardService {
         return List.of(sortedMap);
     }
 
+    public List<String> getDistinctMachineNames() {
+        return dashboardRepository.getDistinctMachineNames();
+    }
+
 
 
 
